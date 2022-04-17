@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import TodoList from '../../components/Todo/TodoList';
-import Form from '../../components/Form/Form';
+import TodoForm from '../../components/TodoForm/TodoForm';
 import { AppContextType, TodoType } from '../../model';
 
 import './App.css';
@@ -39,9 +39,7 @@ const App = () => {
   };
 
   const setAllTodos = () => {
-    // взять Todos из redux
     setTodos(todos);
-    console.log(todos);
   };
 
   const sortTodos = (event: any) => {
@@ -71,7 +69,7 @@ const App = () => {
   return (
     <Context.Provider value={{ toggleCompletedTodo }}>
       <div className="container">
-        <Form onSubmit={onSubmit} />
+        <TodoForm />
         <div className="functional-panel-container">
           <h1>Todos</h1>
           <div className="filter-buttons--container">
@@ -87,7 +85,7 @@ const App = () => {
             </select>
           </div>
         </div>
-        <TodoList todos={todos} />
+        <TodoList />
       </div>
     </Context.Provider>
   );

@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { TodoType } from '../../model';
 import { v4 } from 'uuid';
+import { createTodo } from '../../redux/Actions';
 
-import './Form.css';
+import './TodoForm.css';
 
-type FormType = {
-  onSubmit(todo: TodoType): void;
-};
 
-const Form: React.FC<FormType> = ({ onSubmit }) => {
+const TodoForm: React.FC<any> = () => {
   const [todo, setTodo] = useState<TodoType>({
     title: '',
     description: '',
@@ -25,7 +24,9 @@ const Form: React.FC<FormType> = ({ onSubmit }) => {
 
   const onSubmitForm = (event: React.SyntheticEvent): void => {
     event.preventDefault();
-    onSubmit(todo);
+    console.log(todo)
+    console.log(createTodo)
+    createTodo(todo);
     setTodo({
       title: '',
       description: '',
@@ -64,11 +65,15 @@ const Form: React.FC<FormType> = ({ onSubmit }) => {
           value={todo.date}
         />
       </div>
-      <button onClick={onSubmitForm} className="button-form--submit">
+      <button type="submit" onClick={onSubmitForm} className="button-form--submit">
         Add Todo
       </button>
     </form>
   );
 };
 
-export default Form;
+const mapDispatchToProps = {
+  createTodo,
+}
+
+export default connect(null, mapDispatchToProps) (TodoForm);

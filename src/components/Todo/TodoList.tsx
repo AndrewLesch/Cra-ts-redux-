@@ -1,21 +1,26 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { TodoType } from '../../model';
 import TodoItem from './TodoItem';
 
 import './Todo.css';
 
-type TodoListType = {
-  todos: TodoType[];
-};
 
-const TodoList: React.FC<TodoListType> = ({ todos }) => {
+const TodoList: React.FC<any> = ({ Todos }) => {
+  console.log(Todos)
   return (
     <ul className="todo-list">
-      {todos.map((todo, id) => (
-        <TodoItem key={id} todo={todo} />
-      ))}
+      {Todos}
     </ul>
   );
 };
 
-export default TodoList;
+const mapStateToProps: any = (state: any) => {
+  console.log(state, state.todos, state.todos.todos)
+  
+  return {
+    Todos: state.todos.todos
+  }
+}
+
+export default connect(mapStateToProps, null) (TodoList);
