@@ -10,7 +10,7 @@ type TodoItemType = {
 
 const TodoItem: React.FC<TodoItemType> = ({ todo }) => {
   const { toggleCompletedTodo } = useContext<AppContextType>(Context);
-  
+
   return (
     <li className="todo-item">
       <span className={`${todo.completed === true ? 'todo--completed' : ''}`}>

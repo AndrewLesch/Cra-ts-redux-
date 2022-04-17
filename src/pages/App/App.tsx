@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TodoList from '../../components/Todo/TodoList';
 import Form from '../../components/Form/Form';
 import { AppContextType, TodoType } from '../../model';
@@ -24,14 +24,70 @@ const App = () => {
       }
       return todo;
     });
+
     setTodos(newTodos);
+  };
+
+  const setFiltredTodos = () => {
+    const todos1 = [...todos];
+    // сохранить в редакс
+    const filteredTodosByToday = todos1.filter((todo) => {
+      return todo.date === new Date().toISOString().split('T')[0];
+    });
+
+    setTodos(filteredTodosByToday);
+  };
+
+  const setAllTodos = () => {
+    // взять Todos из redux
+    setTodos(todos);
+    console.log(todos);
+  };
+
+  const sortTodos = (event: any) => {
+    if (event.target.value === 'Title') {
+      const todos1 = [...todos];
+      const newTodos = todos1.sort((todo1, todo2) => {
+        if (todo1.title > todo2.title) return 1;
+        if (todo1.title < todo2.title) return -1;
+
+        return 1 | -1;
+      });
+
+      setTodos(newTodos);
+    } else {
+      const todos1 = [...todos];
+      const newTodos = todos1.sort((todo1, todo2) => {
+        if (new Date(todo1.date) > new Date(todo2.date)) return 1;
+        if (new Date(todo1.date) < new Date(todo2.date)) return -1;
+
+        return 1 | -1;
+      });
+
+      setTodos(newTodos);
+    }
   };
 
   return (
     <Context.Provider value={{ toggleCompletedTodo }}>
       <div className="container">
         <Form onSubmit={onSubmit} />
-        <TodoList todos={todos}></TodoList>
+        <div className="functional-panel-container">
+          <h1>Todos</h1>
+          <div className="filter-buttons--container">
+            <button onClick={setFiltredTodos}>Today</button>
+            <button onClick={setAllTodos}>All</button>
+          </div>
+
+          <div className="sort-select--container">
+            <span>Sort by </span>
+            <select onChange={sortTodos}>
+              <option value="Title">Title</option>
+              <option value="Date">Date</option>
+            </select>
+          </div>
+        </div>
+        <TodoList todos={todos} />
       </div>
     </Context.Provider>
   );
