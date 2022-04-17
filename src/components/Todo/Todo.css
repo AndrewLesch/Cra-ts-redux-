@@ -1,0 +1,21 @@
+.todo-list {
+  list-style-type: none;
+}
+
+.todo-item {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.input-todo--item {
+  margin: 10px;
+}
+
+.todo--completed {
+  text-decoration: line-through;
+}

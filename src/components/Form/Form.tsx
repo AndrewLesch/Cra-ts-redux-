@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TodoType } from '../../model';
-import { emptyTodo } from './formConstants';
+import { v4 } from 'uuid';
 
 import './Form.css';
 
@@ -9,7 +9,13 @@ type FormType = {
 };
 
 const Form: React.FC<FormType> = ({ onSubmit }) => {
-  const [todo, setTodo] = useState(emptyTodo);
+  const [todo, setTodo] = useState<TodoType>({
+    title: '',
+    description: '',
+    date: new Date().toISOString().split('T')[0],
+    completed: false,
+    id: v4(),
+  });
 
   const setTodoInputValue =
     (name: string) =>
@@ -20,7 +26,13 @@ const Form: React.FC<FormType> = ({ onSubmit }) => {
   const onSubmitForm = (event: React.SyntheticEvent): void => {
     event.preventDefault();
     onSubmit(todo);
-    setTodo(emptyTodo);
+    setTodo({
+      title: '',
+      description: '',
+      date: new Date().toISOString().split('T')[0],
+      completed: false,
+      id: v4(),
+    });
   };
 
   return (

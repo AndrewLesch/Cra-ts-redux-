@@ -3,4 +3,9 @@ export type TodoType = {
   description: string;
   date: string;
   completed: boolean;
+  id: string;
+};
+
+export type AppContextType = {
+  toggleCompletedTodo(id: string): void;
 };
