@@ -1,0 +1,25 @@
+.form {
+  text-align: center;
+  width: 100%;
+}
+
+.input-form {
+  width: 70%;
+  height: 50px;
+  margin: 10px;
+}
+
+.button-form--submit {
+  width: 40%;
+  height: 35px;
+  margin-top: 20px;
+}
+
+.input-description {
+  text-align: left;
+  margin-left: 15%;
+}
+
+.input-container {
+  font-size: 20px;
+}
