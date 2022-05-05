@@ -5,22 +5,21 @@ import TodoItem from './TodoItem';
 
 import './Todo.css';
 
-
 const TodoList: React.FC<any> = ({ Todos }) => {
-  console.log(Todos)
+  console.log(Todos);
   return (
     <ul className="todo-list">
-      {Todos}
+      {Todos.map((todo: TodoType) => {
+        return <TodoItem key={todo.id} todo={todo} />;
+      })}
     </ul>
   );
 };
 
 const mapStateToProps: any = (state: any) => {
-  console.log(state, state.todos, state.todos.todos)
-  
   return {
-    Todos: state.todos.todos
-  }
-}
+    Todos: state.todos.todos,
+  };
+};
 
-export default connect(mapStateToProps, null) (TodoList);
+export default connect(mapStateToProps, null)(TodoList);
