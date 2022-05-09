@@ -5,7 +5,3 @@ export type TodoType = {
   completed: boolean;
   id: string;
 };
-
-export type AppContextType = {
-  toggleCompletedTodo(id: string): void;
-};

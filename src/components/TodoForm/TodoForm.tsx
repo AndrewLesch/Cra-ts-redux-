@@ -77,7 +77,7 @@ const TodoForm: React.FC<any> = ({ createTodoAction }) => {
 };
 
 const mapDispatchToProps = (dispatch: any) => ({
-  createTodoAction: (todo: any) => {
+  createTodoAction: (todo: TodoType) => {
     const actionPayload = createTodo(todo);
     dispatch(actionPayload);
   },

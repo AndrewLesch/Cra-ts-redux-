@@ -1,17 +1,20 @@
-import { CREATE_TODO, TOGGLE_TODO } from './Types';
+import { CREATE_TODO, SET_IS_FILTERED, TOGGLE_TODO } from './Types';
 import { TodoType } from '../model';
 
 const initialState = {
   todos: [] as TodoType[],
+  isFiltered: true as boolean,
 };
 
 export const todosReducer = (state = initialState, action: any) => {
   switch (action.type) {
+    case SET_IS_FILTERED:
+      return { ...state, isFiltered: action.payload };
     case CREATE_TODO:
       return { ...state, todos: [...state.todos, action.payload] };
     case TOGGLE_TODO:
       const newTodos: TodoType[] = state.todos.map((todo) => {
-        const todoCopy = { ...todo };
+        const todoCopy: TodoType = { ...todo };
         if (todoCopy.id === action.payload) {
           todoCopy.completed = !todoCopy.completed;
         }

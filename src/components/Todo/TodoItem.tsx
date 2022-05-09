@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import React, { useContext } from 'react';
-import { AppContextType, TodoType } from '../../model';
+import React from 'react';
+import { TodoType } from '../../model';
 import './Todo.css';
 import { toggleCompletedTodo } from '../../redux/Actions';
 
@@ -13,7 +13,6 @@ const TodoItem: React.FC<TodoItemType> = ({
   todo,
   toggleCompletedTodoAction,
 }) => {
-  console.log(todo);
   return (
     <li className="todo-item">
       <span className={`${todo.completed === true ? 'todo--completed' : ''}`}>

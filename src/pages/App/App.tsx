@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import TodoList from '../../components/Todo/TodoList';
 import TodoForm from '../../components/TodoForm/TodoForm';
-import { AppContextType, TodoType } from '../../model';
+import { setIsFiltered } from '../../redux/Actions';
 
 import './App.css';
 
-const App = () => {
+const App: React.FC<any> = ({ setIsFilteredAction }) => {
   return (
     <div className="container">
       <TodoForm />
       <div className="functional-panel-container">
         <h1>Todos</h1>
         <div className="filter-buttons--container">
-          <button>Today</button>
-          <button>All</button>
+          <button onClick={() => setIsFilteredAction(true)}>Today</button>
+          <button onClick={() => setIsFilteredAction(false)}>All</button>
         </div>
 
         <div className="sort-select--container">
@@ -29,4 +30,10 @@ const App = () => {
   );
 };
 
-export default App;
+const mapDispatchToProps = (dispatch: any) => ({
+  setIsFilteredAction: (isFiltered: boolean) => {
+    const actionPayload = setIsFiltered(isFiltered);
+    dispatch(actionPayload);
+  },
+});
+export default connect(null, mapDispatchToProps)(App);
