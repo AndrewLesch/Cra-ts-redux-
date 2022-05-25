@@ -1,5 +1,5 @@
 import { TodoType } from '../model';
-import { CREATE_TODO, SET_IS_FILTERED, TOGGLE_TODO } from './Types';
+import { CREATE_TODO, SET_IS_FILTERED, TOGGLE_TODO, SET_SORTED_BY } from './Types';
 
 export function createTodo(todo: TodoType) {
   return {
@@ -20,4 +20,11 @@ export function setIsFiltered(isFiltered: boolean) {
     type: SET_IS_FILTERED,
     payload: isFiltered,
   };
+}
+
+export function setSortedBy(sortedBy: string) {
+  return {
+    type: SET_SORTED_BY,
+    payload: sortedBy,
+  }
 }

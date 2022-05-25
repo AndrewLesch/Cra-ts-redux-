@@ -6,8 +6,9 @@ import TodoItem from './TodoItem';
 import './Todo.css';
 import { currentDate } from '../TodoForm/todoFormConstants';
 
-const TodoList: React.FC<any> = ({ Todos, isFiltered }) => {
+const TodoList: React.FC<any> = ({ Todos, isFiltered, sortedBy }) => {
   let filteredTodos: TodoType[] = [];
+  let sortedAndFilteredTodos: TodoType[] = [];
 
   if (isFiltered) {
     filteredTodos = Todos.filter((todo: TodoType) => {
@@ -19,11 +20,26 @@ const TodoList: React.FC<any> = ({ Todos, isFiltered }) => {
     filteredTodos = Todos;
   }
 
-  console.log(isFiltered);
+
+  if (sortedBy === 'Title') {
+    sortedAndFilteredTodos = filteredTodos.sort((firstTodo, secondTodo) => {
+      if (firstTodo.title > secondTodo.title) return 1;
+      if (firstTodo.title < secondTodo.title) return -1;
+
+      return 1 | -1;
+    });
+  } else {
+    sortedAndFilteredTodos = filteredTodos.sort((firtsTodo, secondTodo) => {
+      if (new Date(firtsTodo.date) > new Date(secondTodo.date)) return 1;
+      if (new Date(firtsTodo.date) < new Date(secondTodo.date)) return -1;
+
+      return 1 | -1;
+    })
+  }
 
   return (
     <ul className="todo-list">
-      {filteredTodos.map((todo: TodoType) => {
+      {sortedAndFilteredTodos.map((todo: TodoType) => {
         return <TodoItem key={todo.id} todo={todo} />;
       })}
     </ul>
@@ -31,10 +47,10 @@ const TodoList: React.FC<any> = ({ Todos, isFiltered }) => {
 };
 
 const mapStateToProps = (state: any) => {
-  console.log(state);
   return {
     Todos: state.todos.todos,
     isFiltered: state.todos.isFiltered,
+    sortedBy: state.todos.sortedBy,
   };
 };
 

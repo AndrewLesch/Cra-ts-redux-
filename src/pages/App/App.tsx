@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import TodoList from '../../components/Todo/TodoList';
 import TodoForm from '../../components/TodoForm/TodoForm';
-import { setIsFiltered } from '../../redux/Actions';
+import { setIsFiltered, setSortedBy } from '../../redux/Actions';
 
 import './App.css';
 
-const App: React.FC<any> = ({ setIsFilteredAction }) => {
+const App: React.FC<any> = ({ setIsFilteredAction, setSortedByAction }) => {
+  
+  const changeSortedValue = (event: any) => {
+    setSortedByAction(event.target.value)
+  }
+
   return (
     <div className="container">
       <TodoForm />
@@ -19,7 +24,7 @@ const App: React.FC<any> = ({ setIsFilteredAction }) => {
 
         <div className="sort-select--container">
           <span>Sort by </span>
-          <select>
+          <select onChange={changeSortedValue}>
             <option value="Title">Title</option>
             <option value="Date">Date</option>
           </select>
@@ -33,6 +38,10 @@ const App: React.FC<any> = ({ setIsFilteredAction }) => {
 const mapDispatchToProps = (dispatch: any) => ({
   setIsFilteredAction: (isFiltered: boolean) => {
     const actionPayload = setIsFiltered(isFiltered);
+    dispatch(actionPayload);
+  },
+  setSortedByAction: (sortedBy: string) => {
+    const actionPayload = setSortedBy(sortedBy);
     dispatch(actionPayload);
   },
 });

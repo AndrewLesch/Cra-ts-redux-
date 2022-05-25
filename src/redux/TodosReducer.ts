@@ -1,15 +1,18 @@
-import { CREATE_TODO, SET_IS_FILTERED, TOGGLE_TODO } from './Types';
+import { CREATE_TODO, SET_IS_FILTERED, TOGGLE_TODO, SET_SORTED_BY } from './Types';
 import { TodoType } from '../model';
 
 const initialState = {
   todos: [] as TodoType[],
   isFiltered: true as boolean,
+  sortedBy: 'Title' as string,
 };
 
 export const todosReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case SET_IS_FILTERED:
       return { ...state, isFiltered: action.payload };
+    case SET_SORTED_BY:
+       return { ...state, sortedBy: action.payload };
     case CREATE_TODO:
       return { ...state, todos: [...state.todos, action.payload] };
     case TOGGLE_TODO:
