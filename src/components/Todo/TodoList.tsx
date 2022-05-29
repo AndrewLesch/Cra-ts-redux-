@@ -6,7 +6,12 @@ import TodoItem from './TodoItem';
 import './Todo.css';
 import { currentDate } from '../TodoForm/todoFormConstants';
 
-const TodoList: React.FC<any> = ({ Todos, isFiltered, sortedBy }) => {
+const TodoList: React.FC<any> = ({
+  Todos,
+  isFiltered,
+  sortedBy,
+  sortOrder,
+}) => {
   let filteredTodos: TodoType[] = [];
   let sortedAndFilteredTodos: TodoType[] = [];
 
@@ -20,22 +25,41 @@ const TodoList: React.FC<any> = ({ Todos, isFiltered, sortedBy }) => {
     filteredTodos = Todos;
   }
 
-
   if (sortedBy === 'Title') {
-    sortedAndFilteredTodos = filteredTodos.sort((firstTodo, secondTodo) => {
-      if (firstTodo.title > secondTodo.title) return 1;
-      if (firstTodo.title < secondTodo.title) return -1;
+    if (sortOrder === 'Direct') {
+      sortedAndFilteredTodos = filteredTodos.sort((firstTodo, secondTodo) => {
+        if (firstTodo.title > secondTodo.title) return 1;
+        if (firstTodo.title < secondTodo.title) return -1;
 
-      return 1 | -1;
-    });
+        return 1 | -1;
+      });
+    } else {
+      sortedAndFilteredTodos = filteredTodos.sort((firstTodo, secondTodo) => {
+        if (firstTodo.title > secondTodo.title) return -1;
+        if (firstTodo.title < secondTodo.title) return 1;
+
+        return 1 | -1;
+      });
+    }
   } else {
-    sortedAndFilteredTodos = filteredTodos.sort((firtsTodo, secondTodo) => {
-      if (new Date(firtsTodo.date) > new Date(secondTodo.date)) return 1;
-      if (new Date(firtsTodo.date) < new Date(secondTodo.date)) return -1;
+    if (sortOrder === 'Direct') {
+      sortedAndFilteredTodos = filteredTodos.sort((firtsTodo, secondTodo) => {
+        if (new Date(firtsTodo.date) > new Date(secondTodo.date)) return 1;
+        if (new Date(firtsTodo.date) < new Date(secondTodo.date)) return -1;
 
-      return 1 | -1;
-    })
+        return 1 | -1;
+      });
+    } else {
+      sortedAndFilteredTodos = filteredTodos.sort((firtsTodo, secondTodo) => {
+        if (new Date(firtsTodo.date) > new Date(secondTodo.date)) return -1;
+        if (new Date(firtsTodo.date) < new Date(secondTodo.date)) return 1;
+
+        return 1 | -1;
+      });
+    }
   }
+
+  console.log(sortOrder);
 
   return (
     <ul className="todo-list">
@@ -51,6 +75,7 @@ const mapStateToProps = (state: any) => {
     Todos: state.todos.todos,
     isFiltered: state.todos.isFiltered,
     sortedBy: state.todos.sortedBy,
+    sortOrder: state.todos.sortOrder,
   };
 };
 

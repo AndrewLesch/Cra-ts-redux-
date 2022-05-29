@@ -2,15 +2,22 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import TodoList from '../../components/Todo/TodoList';
 import TodoForm from '../../components/TodoForm/TodoForm';
-import { setIsFiltered, setSortedBy } from '../../redux/Actions';
+import { setIsFiltered, setSortedBy, setSortOrder } from '../../redux/Actions';
 
 import './App.css';
 
-const App: React.FC<any> = ({ setIsFilteredAction, setSortedByAction }) => {
-  
+const App: React.FC<any> = ({
+  setIsFilteredAction,
+  setSortedByAction,
+  setSortOrderAction,
+}) => {
   const changeSortedValue = (event: any) => {
-    setSortedByAction(event.target.value)
-  }
+    setSortedByAction(event.target.value);
+  };
+
+  const changeOrderValue = (event: any) => {
+    setSortOrderAction(event.target.value);
+  };
 
   return (
     <div className="container">
@@ -28,6 +35,11 @@ const App: React.FC<any> = ({ setIsFilteredAction, setSortedByAction }) => {
             <option value="Title">Title</option>
             <option value="Date">Date</option>
           </select>
+
+          <select onChange={changeOrderValue}>
+            <option value="Direct">Direct</option>
+            <option value="Reverse">Reverse</option>
+          </select>
         </div>
       </div>
       <TodoList />
@@ -42,6 +54,10 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   setSortedByAction: (sortedBy: string) => {
     const actionPayload = setSortedBy(sortedBy);
+    dispatch(actionPayload);
+  },
+  setSortOrderAction: (sortOrder: string) => {
+    const actionPayload = setSortOrder(sortOrder);
     dispatch(actionPayload);
   },
 });
