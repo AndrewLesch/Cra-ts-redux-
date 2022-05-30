@@ -10,6 +10,7 @@ const App: React.FC<any> = ({
   setIsFilteredAction,
   setSortedByAction,
   setSortOrderAction,
+  isFiltered,
 }) => {
   const changeSortedValue = (event: any) => {
     setSortedByAction(event.target.value);
@@ -19,14 +20,16 @@ const App: React.FC<any> = ({
     setSortOrderAction(event.target.value);
   };
 
-  return (
+  console.log(isFiltered)
+
+  return (  
     <div className="container">
       <TodoForm />
       <div className="functional-panel-container">
-        <h1>Todos</h1>
+        <h1 className="todos-h1">Todos</h1>
         <div className="filter-buttons--container">
-          <button onClick={() => setIsFilteredAction(true)}>Today</button>
-          <button onClick={() => setIsFilteredAction(false)}>All</button>
+          <button className={`${isFiltered === true ? `active filter-button` : `default filter-button`}`} onClick={() => setIsFilteredAction(true)}>Today</button>
+          <button className={`${isFiltered === false ? `active filter-button` : `default filter-button`}`} onClick={() => setIsFilteredAction(false)}>All</button>
         </div>
 
         <div className="sort-select--container">
@@ -61,4 +64,14 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(actionPayload);
   },
 });
-export default connect(null, mapDispatchToProps)(App);
+
+const mapStateToProps = (state: any) => {
+  return {
+    Todos: state.todos.todos,
+    isFiltered: state.todos.isFiltered,
+    sortedBy: state.todos.sortedBy,
+    sortOrder: state.todos.sortOrder,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

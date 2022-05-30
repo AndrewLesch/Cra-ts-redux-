@@ -7,4 +7,34 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+
+.filter-button {
+  height: 35px;
+  width: 55px;
+}
+
+.active {
+  border: 2px solid red;
+}
+
+.default { 
+  border: none;
+}
+
+.filter-buttons--container {
+  width: 25%;
+}
+
+.sort-select--container {
+  color: red;
+  font-size: 22px;
+  width: 25%;
+}
+
+.todos-h1 {
+  width: 25%;
 }
