@@ -7,7 +7,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  text-align: center;
   width: 100%;
 }
 
@@ -27,14 +26,17 @@
 
 .filter-buttons--container {
   width: 25%;
+  text-align: center;
 }
 
 .sort-select--container {
   color: red;
   font-size: 22px;
   width: 25%;
+  text-align: left;
 }
 
 .todos-h1 {
   width: 25%;
+  text-align: right;
 }
