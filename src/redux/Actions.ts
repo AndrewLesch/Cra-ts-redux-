@@ -5,6 +5,8 @@ import {
   TOGGLE_TODO,
   SET_SORTED_BY,
   SET_SORT_ORDER,
+  SET_OPENED_TODO,
+  DELETE_TODO,
 } from './Types';
 
 export function createTodo(todo: TodoType) {
@@ -40,4 +42,18 @@ export function setSortOrder(sortOrder: string) {
     type: SET_SORT_ORDER,
     payload: sortOrder,
   };
+}
+
+export function setOpenedTodo(openedTodo: TodoType) {
+  return {
+    type: SET_OPENED_TODO,
+    payload: openedTodo,
+  }
+}
+
+export function deleteTodo(id: string) {
+  return {
+    type: DELETE_TODO,
+    payload: id,
+  }
 }
