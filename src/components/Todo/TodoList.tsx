@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { TodoType } from '../../model';
 import TodoItem from './TodoItem';
+import { currentDate } from '../TodoForm/todoFormConstants';
 
 import './Todo.css';
-import { currentDate } from '../TodoForm/todoFormConstants';
 
 const TodoList: React.FC<any> = ({
   Todos,
@@ -58,8 +58,6 @@ const TodoList: React.FC<any> = ({
       });
     }
   }
-
-  console.log(sortOrder);
 
   return (
     <ul className="todo-list">

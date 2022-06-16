@@ -1,15 +1,16 @@
+import React, { Dispatch } from 'react';
 import { connect } from 'react-redux';
-import React from 'react';
+import { Action } from 'redux';
 import { TodoType } from '../../model';
-import './Todo.css';
 import { setOpenedTodo, toggleCompletedTodo } from '../../redux/Actions';
 import { Link } from 'react-router-dom';
-import TodoItemPage from './TodoItemPage';
+
+import './Todo.css';
 
 type TodoItemType = {
   todo: TodoType;
-  toggleCompletedTodoAction(a: any): any;
-  setOpenedTodoAction(a: any): any;
+  toggleCompletedTodoAction(todoID: string): void;
+  setOpenedTodoAction(openedTodo: TodoType): void;
 };
 
 const TodoItem: React.FC<TodoItemType> = ({
@@ -25,7 +26,11 @@ const TodoItem: React.FC<TodoItemType> = ({
           type="checkbox"
           onChange={() => toggleCompletedTodoAction(todo.id)}
         />
-        <Link onClick={() => setOpenedTodoAction(todo)} target='_blank' to='todo-item'>
+        <Link
+          onClick={() => setOpenedTodoAction(todo)}
+          target="_blank"
+          to="todo-item"
+        >
           {todo.title} {todo.date}
         </Link>
       </span>
@@ -33,16 +38,15 @@ const TodoItem: React.FC<TodoItemType> = ({
   );
 };
 
-const mapDispatchToProps = (dispatch: any) => ({
-  toggleCompletedTodoAction: (todoId: any) => {
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  toggleCompletedTodoAction: (todoId: string) => {
     const actionPayload = toggleCompletedTodo(todoId);
     dispatch(actionPayload);
   },
-  setOpenedTodoAction: (openedTodo: any) => {
-    console.log(openedTodo)
+  setOpenedTodoAction: (openedTodo: TodoType) => {
     const actionPayload = setOpenedTodo(openedTodo);
     dispatch(actionPayload);
-  }
+  },
 });
 
 export default connect(null, mapDispatchToProps)(TodoItem);

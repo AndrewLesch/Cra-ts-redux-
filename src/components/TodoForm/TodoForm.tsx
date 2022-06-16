@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import React, { Dispatch, useState } from 'react';
 import { v4 } from 'uuid';
+import { connect } from 'react-redux';
+import { Action } from 'redux';
 import { TodoType } from '../../model';
 import { createTodo } from '../../redux/Actions';
 import { currentDate } from './todoFormConstants';
@@ -36,10 +37,11 @@ const TodoForm: React.FC<any> = ({ createTodoAction }) => {
   };
 
   return (
-    <form className="form">
+    <form onSubmit={onSubmitForm} className="form">
       <div className="input-container">
         <p className="input-description">Title</p>
         <input
+          required
           onChange={setTodoInputValue('title')}
           className="input-form"
           placeholder="Write title"
@@ -65,18 +67,14 @@ const TodoForm: React.FC<any> = ({ createTodoAction }) => {
           max={currentDate}
         />
       </div>
-      <button
-        type="submit"
-        onClick={onSubmitForm}
-        className="button-form--submit"
-      >
+      <button type="submit" className="button-form--submit">
         Add Todo
       </button>
     </form>
   );
 };
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   createTodoAction: (todo: TodoType) => {
     const actionPayload = createTodo(todo);
     dispatch(actionPayload);

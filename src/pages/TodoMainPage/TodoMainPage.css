@@ -1,15 +1,14 @@
-.container {
+.wrapper {
   width: 50%;
   margin: auto;
 }
 
-.functional-panel-container {
+.functional-panel--container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
 }
-
 
 .filter-button {
   height: 35px;
@@ -20,7 +19,7 @@
   border: 2px solid red;
 }
 
-.default { 
+.default {
   border: none;
 }
 
@@ -29,14 +28,13 @@
   text-align: center;
 }
 
-.sort-select--container {
-  color: red;
+.sorting-selects--container {
   font-size: 22px;
   width: 25%;
   text-align: left;
 }
 
-.todos-h1 {
+.todos-title {
   width: 25%;
   text-align: right;
 }

@@ -5,3 +5,11 @@ export type TodoType = {
   completed: boolean;
   id: string;
 };
+
+export type StateType = {
+  todos: TodoType[];
+  isFiltered: boolean;
+  sortedBy: string;
+  sortOrder: string;
+  openedTodo: TodoType;
+};

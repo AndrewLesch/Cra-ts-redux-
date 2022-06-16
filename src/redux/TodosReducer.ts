@@ -6,10 +6,10 @@ import {
   SET_SORT_ORDER,
   SET_OPENED_TODO,
   DELETE_TODO,
-} from './Types';
-import { TodoType } from '../model';
+} from './Constants';
+import { StateType, TodoType } from '../model';
 
-const initialState = {
+const initialState: StateType = {
   todos: [] as TodoType[],
   isFiltered: true as boolean,
   sortedBy: 'Title' as string,
@@ -29,18 +29,18 @@ export const todosReducer = (state = initialState, action: any) => {
       return { ...state, todos: [...state.todos, action.payload] };
     case SET_OPENED_TODO:
       return { ...state, openedTodo: action.payload };
-    case DELETE_TODO:
-      const newTodos1: TodoType[] = state.todos;
-      const currentTodoId = newTodos1.findIndex((todo) => {
-        const todo1: TodoType = {...todo}
+    case DELETE_TODO: {
+      const newTodos: TodoType[] = state.todos;
+      const currentTodoId = newTodos.findIndex((todo) => {
+        const todo1: TodoType = { ...todo };
         return todo1.id === action.payload;
-      })
+      });
       if (currentTodoId !== -1) {
-        newTodos1.splice(currentTodoId, 1);
-        return { ...state, todos: newTodos1, openedTodo: {}};
-      } else {
-        return 
+        newTodos.splice(currentTodoId, 1);
+        return { ...state, todos: newTodos, openedTodo: {} };
       }
+      return;
+    }
     case TOGGLE_TODO:
       const newTodos: TodoType[] = state.todos.map((todo) => {
         const todoCopy: TodoType = { ...todo };
@@ -54,23 +54,3 @@ export const todosReducer = (state = initialState, action: any) => {
       return state;
   }
 };
-
-const KEY = "redux";
-export function loadState() {
-  try {
-    const serializedState = localStorage.getItem(KEY);
-    if (!serializedState) return undefined;
-    return JSON.parse(serializedState);
-  } catch (e) {
-    return undefined;
-  }
-}
-
-export async function saveState(state: any) {
-  try {
-    const serializedState = JSON.stringify(state);
-    localStorage.setItem(KEY, serializedState);
-  } catch (e) {
-    // Ignore
-  }
-}

@@ -1,51 +1,49 @@
+import React, { Dispatch } from 'react';
 import { connect } from 'react-redux';
-import React from 'react';
+import { Action } from 'redux';
 import { TodoType } from '../../model';
-import './Todo.css';
 import { deleteTodo, toggleCompletedTodo } from '../../redux/Actions';
-import { Link } from 'react-router-dom';
 
 type TodoItemPageType = {
-  openedTodo: TodoType,
-  Todos: TodoType[],
-  deleteTodoAction(a: any): any,
+  openedTodo: TodoType;
+  deleteTodoAction(id: string): void;
 };
 
 const TodoItemPage: React.FC<TodoItemPageType> = ({
   openedTodo,
-  Todos,
   deleteTodoAction,
 }) => {
   return (
-   <div>
-      <li className="todo-item">
-      {openedTodo.title} {openedTodo.description}
-    </li>
-    <button onClick={() => deleteTodoAction(openedTodo.id)}>
-      Удалить todo
-    </button>
-   </div>
+    <>
+      {openedTodo.title !== undefined ? (
+        <div>
+          <p>
+            {openedTodo.title} {openedTodo.description}
+          </p>
+          <button onClick={() => deleteTodoAction(openedTodo.id)}>
+            Удалить todo
+          </button>
+        </div>
+      ) : (
+        <p>Todo удален.</p>
+      )}
+    </>
   );
 };
 
-const mapDispatchToProps = (dispatch: any) => ({
-  toggleCompletedTodoAction: (todoId: any) => {
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  toggleCompletedTodoAction: (todoId: string) => {
     const actionPayload = toggleCompletedTodo(todoId);
     dispatch(actionPayload);
   },
   deleteTodoAction: (id: string) => {
-    console.log(id)
     const actionPayload = deleteTodo(id);
     dispatch(actionPayload);
-  }
+  },
 });
 
 const mapStateToProps = (state: any) => {
   return {
-    Todos: state.todos.todos,
-    isFiltered: state.todos.isFiltered,
-    sortedBy: state.todos.sortedBy,
-    sortOrder: state.todos.sortOrder,
     openedTodo: state.todos.openedTodo,
   };
 };

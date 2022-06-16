@@ -7,7 +7,7 @@ import {
   SET_SORT_ORDER,
   SET_OPENED_TODO,
   DELETE_TODO,
-} from './Types';
+} from './Constants';
 
 export function createTodo(todo: TodoType) {
   return {
@@ -48,12 +48,12 @@ export function setOpenedTodo(openedTodo: TodoType) {
   return {
     type: SET_OPENED_TODO,
     payload: openedTodo,
-  }
+  };
 }
 
 export function deleteTodo(id: string) {
   return {
     type: DELETE_TODO,
     payload: id,
-  }
+  };
 }
