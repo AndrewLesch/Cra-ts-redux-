@@ -1,21 +1,14 @@
 import React, { Dispatch, useState } from 'react';
-import { v4 } from 'uuid';
 import { connect } from 'react-redux';
 import { Action } from 'redux';
 import { TodoType } from '../../model';
 import { createTodo } from '../../redux/Actions';
-import { currentDate } from './todoFormConstants';
+import { currentDate, epmtyTodo } from './todoFormConstants';
 
 import './TodoForm.css';
 
 const TodoForm: React.FC<any> = ({ createTodoAction }) => {
-  const [todo, setTodo] = useState<TodoType>({
-    title: '',
-    description: '',
-    date: currentDate,
-    completed: false,
-    id: v4(),
-  });
+  const [todo, setTodo] = useState<TodoType>(epmtyTodo);
 
   const setTodoInputValue =
     (name: string) =>
@@ -27,13 +20,7 @@ const TodoForm: React.FC<any> = ({ createTodoAction }) => {
     event.preventDefault();
 
     createTodoAction(todo);
-    setTodo({
-      title: '',
-      description: '',
-      date: currentDate,
-      completed: false,
-      id: v4(),
-    });
+    setTodo(epmtyTodo);
   };
 
   return (
