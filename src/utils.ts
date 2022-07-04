@@ -19,7 +19,6 @@ export const SortAndFilterTodo = (
   } else {
     filteredTodos = Todos;
   }
-  console.log(filteredTodos);
   if (sortedBy === 'Title') {
     if (sortOrder === 'Direct') {
       sortedAndFilteredTodos = filteredTodos.sort((firstTodo, secondTodo) => {
@@ -53,6 +52,5 @@ export const SortAndFilterTodo = (
       });
     }
   }
-  console.log(sortedAndFilteredTodos);
   return sortedAndFilteredTodos;
 };

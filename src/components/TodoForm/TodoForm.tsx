@@ -3,12 +3,19 @@ import { connect } from 'react-redux';
 import { Action } from 'redux';
 import { TodoType } from '../../model';
 import { createTodo } from '../../redux/Actions';
-import { currentDate, epmtyTodo } from './todoFormConstants';
+import { currentDate } from './todoFormConstants';
 
 import './TodoForm.css';
+import { v4 } from 'uuid';
 
 const TodoForm: React.FC<any> = ({ createTodoAction }) => {
-  const [todo, setTodo] = useState<TodoType>(epmtyTodo);
+  const [todo, setTodo] = useState<TodoType>({
+    title: '',
+    description: '',
+    date: currentDate,
+    completed: false,
+    id: v4(),
+  });
 
   const setTodoInputValue =
     (name: string) =>
@@ -20,7 +27,13 @@ const TodoForm: React.FC<any> = ({ createTodoAction }) => {
     event.preventDefault();
 
     createTodoAction(todo);
-    setTodo(epmtyTodo);
+    setTodo({
+      title: '',
+      description: '',
+      date: currentDate,
+      completed: false,
+      id: v4(),
+    });
   };
 
   return (
