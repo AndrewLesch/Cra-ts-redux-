@@ -1,56 +1,42 @@
-import { currentDate } from './components/TodoForm/todoFormConstants';
-import { TodoType } from './model';
+import { currentDate } from './components/TodoForm/TodoForm';
+import { Todo } from './model';
+import { FilteredByDate, SortedBy, SortOrder } from './types';
 
-export const SortAndFilterTodo = (
-  isFiltered: boolean,
-  sortedBy: string,
-  sortOrder: string,
-  Todos: TodoType[]
-): TodoType[] => {
-  let filteredTodos: TodoType[] = [];
-  let sortedAndFilteredTodos: TodoType[] = [];
+export const sortAndFilterTodos = (
+  todos: Todo[],
+  filteredByDate: FilteredByDate,
+  sortedBy: SortedBy,
+  sortOrder: SortOrder
+): Todo[] => {
+  todos = [...todos];
 
-  if (isFiltered) {
-    filteredTodos = Todos.filter((todo: TodoType) => {
-      if (todo.date === currentDate) {
-        return todo;
-      }
-    });
-  } else {
-    filteredTodos = Todos;
+  if (filteredByDate === FilteredByDate.TODAY) {
+    todos = todos.filter((todo: Todo) => todo.date === currentDate);
   }
-  if (sortedBy === 'Title') {
-    if (sortOrder === 'Direct') {
-      sortedAndFilteredTodos = filteredTodos.sort((firstTodo, secondTodo) => {
-        if (firstTodo.title > secondTodo.title) return 1;
-        if (firstTodo.title < secondTodo.title) return -1;
 
-        return 1 | -1;
-      });
-    } else {
-      sortedAndFilteredTodos = filteredTodos.sort((firstTodo, secondTodo) => {
-        if (firstTodo.title > secondTodo.title) return -1;
-        if (firstTodo.title < secondTodo.title) return 1;
+  switch (sortedBy) {
+    case SortedBy.TITLE: {
+      todos = todos.sort((firstTodo, secondTodo) =>
+        sortOrder === SortOrder.DIRECT
+          ? firstTodo.title.localeCompare(secondTodo.title)
+          : secondTodo.title.localeCompare(firstTodo.title)
+      );
 
-        return 1 | -1;
-      });
+      return todos;
     }
-  } else {
-    if (sortOrder === 'Direct') {
-      sortedAndFilteredTodos = filteredTodos.sort((firtsTodo, secondTodo) => {
-        if (new Date(firtsTodo.date) > new Date(secondTodo.date)) return 1;
-        if (new Date(firtsTodo.date) < new Date(secondTodo.date)) return -1;
 
-        return 1 | -1;
-      });
-    } else {
-      sortedAndFilteredTodos = filteredTodos.sort((firtsTodo, secondTodo) => {
-        if (new Date(firtsTodo.date) > new Date(secondTodo.date)) return -1;
-        if (new Date(firtsTodo.date) < new Date(secondTodo.date)) return 1;
+    case SortedBy.DATE: {
+      todos = todos.sort((firstTodo, secondTodo) =>
+        sortOrder === SortOrder.DIRECT
+          ? firstTodo.date - secondTodo.date
+          : secondTodo.date - firstTodo.date
+      );
 
-        return 1 | -1;
-      });
+      return todos;
+    }
+
+    default: {
+      return todos;
     }
   }
-  return sortedAndFilteredTodos;
 };

@@ -1,37 +1,48 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { TodoType } from '../../model';
+import { Todo, AppState } from '../../model';
 import TodoItem from './TodoItem';
+import { sortAndFilterTodos } from '../../utils';
+import { FilteredByDate, SortedBy, SortOrder } from '../../types';
 
 import './Todo.css';
-import { SortAndFilterTodo } from '../../utils';
 
-const TodoList: React.FC<any> = ({
-  Todos,
-  isFiltered,
+type TodoListProps = {
+  todos: Todo[];
+  filteredByDate: FilteredByDate;
+  sortedBy: SortedBy;
+  sortOrder: SortOrder;
+};
+
+const TodoList: React.FC<TodoListProps> = ({
+  todos,
+  filteredByDate,
   sortedBy,
   sortOrder,
 }) => {
-  let sortedAndFilteredTodos: TodoType[] = [
-    ...SortAndFilterTodo(isFiltered, sortedBy, sortOrder, Todos),
-  ];
+  const sortedAndFilteredTodos: Todo[] = sortAndFilterTodos(
+    todos,
+    filteredByDate,
+    sortedBy,
+    sortOrder
+  );
 
   return (
     <ul className="todo-list">
-      {sortedAndFilteredTodos.map((todo: TodoType) => {
+      {sortedAndFilteredTodos.map((todo: Todo) => {
         return <TodoItem key={todo.id} todo={todo} />;
       })}
     </ul>
   );
 };
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: AppState) => {
   return {
-    Todos: state.todos.todos,
-    isFiltered: state.todos.isFiltered,
+    todos: state.todos.todos,
+    filteredByDate: state.todos.filteredByDate,
     sortedBy: state.todos.sortedBy,
     sortOrder: state.todos.sortOrder,
   };
 };
 
-export default connect(mapStateToProps, null)(TodoList);
+export default connect(mapStateToProps)(TodoList);

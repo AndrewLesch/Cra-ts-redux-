@@ -1,13 +1,11 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import TodoItemPage from '../TodoItemPage/TodoItemPage';
-import TodoMaimPage from '../TodoMainPage/TodoMainPage';
+import TodoMainPage from '../TodoMainPage/TodoMainPage';
 
 const App: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<TodoMaimPage />}></Route>
-      <Route path="todo-item" element={<TodoItemPage />}></Route>
+      <Route path="/" element={<TodoMainPage />}></Route>
     </Routes>
   );
 };

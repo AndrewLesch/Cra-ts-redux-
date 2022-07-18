@@ -1,39 +1,67 @@
 import React, { Dispatch } from 'react';
 import { connect } from 'react-redux';
 import { Action } from 'redux';
-import { TodoType } from '../../model';
-import { setOpenedTodo, toggleCompletedTodo } from '../../redux/Actions';
-import { Link } from 'react-router-dom';
+import { AppState, Todo } from '../../model';
+import {
+  deleteTodo,
+  setSelectedTodoId,
+  toggleCompletedTodo,
+} from '../../redux/Actions';
 
 import './Todo.css';
 
-type TodoItemType = {
-  todo: TodoType;
-  toggleCompletedTodoAction(todoID: string): void;
-  setOpenedTodoAction(openedTodo: TodoType): void;
+type TodoItemProps = {
+  todo: Todo;
+  selectedTodoId: string;
+  toggleCompletedTodoAction(todoId: string): void;
+  setSelectedTodoIdAction(selectedTodoId: string): void;
+  deleteTodoAction(deleteid: string): void;
 };
 
-const TodoItem: React.FC<TodoItemType> = ({
+const TodoItem: React.FC<TodoItemProps> = ({
   todo,
+  selectedTodoId,
   toggleCompletedTodoAction,
-  setOpenedTodoAction,
+  setSelectedTodoIdAction: setSelectedTodoAction,
+  deleteTodoAction,
 }) => {
+  const isTodoSelected = todo.id === selectedTodoId;
   return (
-    <li className="todo-item">
-      <span className={`${todo.completed === true ? 'todo--completed' : ''}`}>
+    <li
+      onClick={() => setSelectedTodoAction(todo.id)}
+      className={`${
+        isTodoSelected ? 'selected todo-item' : 'unselected todo-item'
+      }`}
+    >
+      <span
+        className={`${
+          todo.completed ? 'todo-item__completed' : 'todo-item__unfulfilled'
+        }`}
+      >
         <input
-          className="input-todo--item"
+          className="todo-item--checkbox"
           type="checkbox"
+          checked={todo.completed}
           onChange={() => toggleCompletedTodoAction(todo.id)}
         />
-        <Link
-          onClick={() => setOpenedTodoAction(todo)}
-          target="_blank"
-          to="todo-item"
-        >
-          {todo.title} {todo.date}
-        </Link>
+        {todo.title} {'Date:'}
+        {new Date(todo.date).toISOString().substring(0, 10)}
       </span>
+      {isTodoSelected ? (
+        <div>
+          <button
+            className="delete-button"
+            onClick={() => deleteTodoAction(todo.id)}
+          >
+            {' '}
+            Удалить
+          </button>
+          <hr></hr>
+          <span>{todo.description}</span>
+        </div>
+      ) : (
+        <></>
+      )}
     </li>
   );
 };
@@ -43,10 +71,20 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
     const actionPayload = toggleCompletedTodo(todoId);
     dispatch(actionPayload);
   },
-  setOpenedTodoAction: (openedTodo: TodoType) => {
-    const actionPayload = setOpenedTodo(openedTodo);
+  setSelectedTodoIdAction: (selectedTodoId: string) => {
+    const actionPayload = setSelectedTodoId(selectedTodoId);
+    dispatch(actionPayload);
+  },
+  deleteTodoAction: (deleteTodoId: string) => {
+    const actionPayload = deleteTodo(deleteTodoId);
     dispatch(actionPayload);
   },
 });
 
-export default connect(null, mapDispatchToProps)(TodoItem);
+const mapStateToProps = (state: AppState) => {
+  return {
+    selectedTodoId: state.todos.selectedTodoId,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoItem);

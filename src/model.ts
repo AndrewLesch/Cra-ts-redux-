@@ -1,15 +1,25 @@
-export type TodoType = {
+import { FilteredByDate, SortedBy, SortOrder } from './types';
+
+export type Todo = {
+  id: string;
   title: string;
   description: string;
-  date: string;
+  date: number;
   completed: boolean;
-  id: string;
 };
 
-export type StateType = {
-  todos: TodoType[];
-  isFiltered: boolean;
-  sortedBy: string;
-  sortOrder: string;
-  openedTodo: TodoType;
+export type TodoState = {
+  todos: Todo[];
+  filteredByDate: FilteredByDate;
+  sortedBy: SortedBy;
+  sortOrder: SortOrder;
+  selectedTodoId: string;
+};
+
+export type AppState = {
+  todos: TodoState;
+  _persist: {
+    rehidrated: boolean;
+    version: number;
+  };
 };

@@ -1,55 +1,81 @@
+import { AnyAction } from 'redux';
 import {
   CREATE_TODO,
-  SET_IS_FILTERED,
+  SET_FILTERED_BY_DATE,
   TOGGLE_TODO,
   SET_SORTED_BY,
   SET_SORT_ORDER,
-  SET_OPENED_TODO,
   DELETE_TODO,
-} from './Constants';
-import { StateType, TodoType } from '../model';
+  SET_SELECTED_TODO_ID,
+} from './ReduxConstants';
+import { TodoState, Todo } from '../model';
+import { FilteredByDate, SortedBy, SortOrder } from '../types';
+import { actionsWithTodo } from './ReduxUtils';
+import {
+  ActionCreateTodo,
+  ActionDeleteTodo,
+  ActionSetFilteredByDate,
+  ActionSetSelectedTodoId,
+  ActionSetSortedBy,
+  ActionSetSortOrder,
+  ActionToggleTodo,
+} from './ReduxTypes';
 
-const initialState: StateType = {
-  todos: [] as TodoType[],
-  isFiltered: true as boolean,
-  sortedBy: 'Title' as string,
-  sortOrder: 'Direct' as string,
-  openedTodo: {} as TodoType,
+export const initialState: TodoState = {
+  todos: [],
+  filteredByDate: FilteredByDate.TODAY,
+  sortedBy: SortedBy.TITLE,
+  sortOrder: SortOrder.DIRECT,
+  selectedTodoId: '',
 };
 
-export const todosReducer = (state = initialState, action: any) => {
+export const TodosReducer = (
+  state = initialState,
+  action:
+    | ActionCreateTodo
+    | ActionSetFilteredByDate
+    | ActionSetSortedBy
+    | ActionSetSortOrder
+    | ActionDeleteTodo
+    | ActionToggleTodo
+    | ActionSetSelectedTodoId
+    | AnyAction
+) => {
   switch (action.type) {
-    case SET_IS_FILTERED:
-      return { ...state, isFiltered: action.payload };
-    case SET_SORTED_BY:
-      return { ...state, sortedBy: action.payload };
-    case SET_SORT_ORDER:
-      return { ...state, sortOrder: action.payload };
-    case CREATE_TODO:
-      return { ...state, todos: [...state.todos, action.payload] };
-    case SET_OPENED_TODO:
-      return { ...state, openedTodo: action.payload };
-    case DELETE_TODO: {
-      const newTodos: TodoType[] = state.todos;
-      const currentTodoId = newTodos.findIndex((todo) => {
-        const todo1: TodoType = { ...todo };
-        return todo1.id === action.payload;
-      });
-      if (currentTodoId !== -1) {
-        newTodos.splice(currentTodoId, 1);
-        return { ...state, todos: newTodos, openedTodo: {} };
-      }
-      return;
+    case SET_FILTERED_BY_DATE: {
+      const { payload } = action as ActionSetFilteredByDate;
+      return { ...state, filteredByDate: payload };
     }
-    case TOGGLE_TODO:
-      const newTodos: TodoType[] = state.todos.map((todo) => {
-        const todoCopy: TodoType = { ...todo };
-        if (todoCopy.id === action.payload) {
-          todoCopy.completed = !todoCopy.completed;
-        }
-        return todoCopy;
-      });
+    case SET_SORTED_BY: {
+      const { payload } = action as ActionSetSortedBy;
+      return { ...state, sortedBy: payload };
+    }
+    case SET_SORT_ORDER: {
+      const { payload } = action as ActionSetSortOrder;
+      return { ...state, sortOrder: payload };
+    }
+    case CREATE_TODO: {
+      const { payload } = action as ActionCreateTodo;
+      return { ...state, todos: [...state.todos, payload] };
+    }
+    case DELETE_TODO: {
+      const { payload } = action as ActionDeleteTodo;
+      const newTodos: Todo[] = [
+        ...actionsWithTodo.deleteTodo(state.todos, payload),
+      ];
+      return { ...state, todos: newTodos, selectedTodo: null };
+    }
+    case TOGGLE_TODO: {
+      const { payload } = action as ActionToggleTodo;
+      const newTodos: Todo[] = [
+        ...actionsWithTodo.toggleTodo(state.todos, payload),
+      ];
       return { ...state, todos: newTodos };
+    }
+    case SET_SELECTED_TODO_ID: {
+      const { payload } = action as ActionSetSelectedTodoId;
+      return { ...state, selectedTodoId: payload };
+    }
     default:
       return state;
   }

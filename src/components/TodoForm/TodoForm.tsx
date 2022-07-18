@@ -1,21 +1,34 @@
 import React, { Dispatch, useState } from 'react';
 import { connect } from 'react-redux';
 import { Action } from 'redux';
-import { TodoType } from '../../model';
+import { Todo } from '../../model';
 import { createTodo } from '../../redux/Actions';
-import { currentDate } from './todoFormConstants';
-
-import './TodoForm.css';
 import { v4 } from 'uuid';
 
+import './TodoForm.css';
+
+export const currentDate: number = Date.parse(
+  new Date().toISOString().split('T')[0]
+);
+
 const TodoForm: React.FC<any> = ({ createTodoAction }) => {
-  const [todo, setTodo] = useState<TodoType>({
-    title: '',
-    description: '',
-    date: currentDate,
-    completed: false,
-    id: v4(),
-  });
+  const setEmptyTodo = () => {
+    return {
+      title: '',
+      description: '',
+      date: currentDate,
+      completed: false,
+      id: v4(),
+      selected: false,
+    };
+  };
+  const [todo, setTodo] = useState<Todo>(setEmptyTodo());
+
+  const dateInputValue: string = new Date(todo.date)
+    .toISOString()
+    .substring(0, 10);
+
+  const minDateValue = new Date(currentDate).toISOString().substring(0, 10);
 
   const setTodoInputValue =
     (name: string) =>
@@ -23,17 +36,17 @@ const TodoForm: React.FC<any> = ({ createTodoAction }) => {
       setTodo({ ...todo, [name]: event.target.value });
     };
 
+  const setTodoDateInputValue = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setTodo({ ...todo, date: Date.parse(event.target.value) });
+  };
+
   const onSubmitForm = (event: React.SyntheticEvent): void => {
     event.preventDefault();
 
     createTodoAction(todo);
-    setTodo({
-      title: '',
-      description: '',
-      date: currentDate,
-      completed: false,
-      id: v4(),
-    });
+    setTodo(setEmptyTodo());
   };
 
   return (
@@ -60,11 +73,11 @@ const TodoForm: React.FC<any> = ({ createTodoAction }) => {
       <div className="input-container">
         <p className="input-description">Date</p>
         <input
-          onChange={setTodoInputValue('date')}
+          onChange={setTodoDateInputValue}
           type="date"
           className="input-form"
-          value={todo.date}
-          max={currentDate}
+          value={dateInputValue}
+          min={minDateValue}
         />
       </div>
       <button type="submit" className="button-form--submit">
@@ -75,7 +88,7 @@ const TodoForm: React.FC<any> = ({ createTodoAction }) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  createTodoAction: (todo: TodoType) => {
+  createTodoAction: (todo: Todo) => {
     const actionPayload = createTodo(todo);
     dispatch(actionPayload);
   },
