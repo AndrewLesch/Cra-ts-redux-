@@ -1,3 +1,4 @@
+import { AnyAction } from 'redux';
 import { Todo } from '../model';
 import { FilteredByDate } from '../types';
 
@@ -17,11 +18,6 @@ export type ActionSetSortOrder = {
 };
 
 export type ActionCreateTodo = {
-  type: string;
-  payload: Todo;
-};
-
-export type ActionOpenedTodo = {
   type: string;
   payload: Todo;
 };

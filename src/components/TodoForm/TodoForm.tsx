@@ -11,18 +11,19 @@ export const currentDate: number = Date.parse(
   new Date().toISOString().split('T')[0]
 );
 
-const TodoForm: React.FC<any> = ({ createTodoAction }) => {
-  const setEmptyTodo = () => {
-    return {
-      title: '',
-      description: '',
-      date: currentDate,
-      completed: false,
-      id: v4(),
-      selected: false,
-    };
+const getEmptyTodo = () => {
+  return {
+    title: '',
+    description: '',
+    date: currentDate,
+    completed: false,
+    id: v4(),
+    selected: false,
   };
-  const [todo, setTodo] = useState<Todo>(setEmptyTodo());
+};
+
+const TodoForm: React.FC<any> = ({ createTodoAction }) => {
+  const [todo, setTodo] = useState<Todo>(getEmptyTodo());
 
   const dateInputValue: string = new Date(todo.date)
     .toISOString()
@@ -46,7 +47,7 @@ const TodoForm: React.FC<any> = ({ createTodoAction }) => {
     event.preventDefault();
 
     createTodoAction(todo);
-    setTodo(setEmptyTodo());
+    setTodo(getEmptyTodo());
   };
 
   return (
@@ -88,7 +89,7 @@ const TodoForm: React.FC<any> = ({ createTodoAction }) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  createTodoAction: (todo: Todo) => {
+  createTodoAction(todo: Todo) {
     const actionPayload = createTodo(todo);
     dispatch(actionPayload);
   },

@@ -1,6 +1,6 @@
 export enum SortOrder {
-  DIRECT = 'Direct',
-  REVERSE = 'Reverse',
+  ASC = 'Ascending',
+  DESC = 'Descending',
 }
 
 export enum FilteredByDate {

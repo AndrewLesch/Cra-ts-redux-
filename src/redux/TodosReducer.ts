@@ -10,7 +10,7 @@ import {
 } from './ReduxConstants';
 import { TodoState, Todo } from '../model';
 import { FilteredByDate, SortedBy, SortOrder } from '../types';
-import { actionsWithTodo } from './ReduxUtils';
+import { TodoUtils } from './ReduxUtils';
 import {
   ActionCreateTodo,
   ActionDeleteTodo,
@@ -25,7 +25,7 @@ export const initialState: TodoState = {
   todos: [],
   filteredByDate: FilteredByDate.TODAY,
   sortedBy: SortedBy.TITLE,
-  sortOrder: SortOrder.DIRECT,
+  sortOrder: SortOrder.ASC,
   selectedTodoId: '',
 };
 
@@ -60,16 +60,12 @@ export const TodosReducer = (
     }
     case DELETE_TODO: {
       const { payload } = action as ActionDeleteTodo;
-      const newTodos: Todo[] = [
-        ...actionsWithTodo.deleteTodo(state.todos, payload),
-      ];
+      const newTodos: Todo[] = TodoUtils.deleteTodoById(state.todos, payload);
       return { ...state, todos: newTodos, selectedTodo: null };
     }
     case TOGGLE_TODO: {
       const { payload } = action as ActionToggleTodo;
-      const newTodos: Todo[] = [
-        ...actionsWithTodo.toggleTodo(state.todos, payload),
-      ];
+      const newTodos: Todo[] = TodoUtils.toggleTodo(state.todos, payload);
       return { ...state, todos: newTodos };
     }
     case SET_SELECTED_TODO_ID: {

@@ -15,7 +15,7 @@ type TodoItemProps = {
   selectedTodoId: string;
   toggleCompletedTodoAction(todoId: string): void;
   setSelectedTodoIdAction(selectedTodoId: string): void;
-  deleteTodoAction(deleteid: string): void;
+  deleteTodoAction(deleteId: string): void;
 };
 
 const TodoItem: React.FC<TodoItemProps> = ({
@@ -67,23 +67,23 @@ const TodoItem: React.FC<TodoItemProps> = ({
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  toggleCompletedTodoAction: (todoId: string) => {
+  toggleCompletedTodoAction(todoId: string) {
     const actionPayload = toggleCompletedTodo(todoId);
     dispatch(actionPayload);
   },
-  setSelectedTodoIdAction: (selectedTodoId: string) => {
+  setSelectedTodoIdAction(selectedTodoId: string) {
     const actionPayload = setSelectedTodoId(selectedTodoId);
     dispatch(actionPayload);
   },
-  deleteTodoAction: (deleteTodoId: string) => {
+  deleteTodoAction(deleteTodoId: string) {
     const actionPayload = deleteTodo(deleteTodoId);
     dispatch(actionPayload);
   },
 });
 
-const mapStateToProps = (state: AppState) => {
+const mapStateToProps = ({todos}: AppState) => {
   return {
-    selectedTodoId: state.todos.selectedTodoId,
+    selectedTodoId: todos.selectedTodoId,
   };
 };
 

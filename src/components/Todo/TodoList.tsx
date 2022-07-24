@@ -36,12 +36,12 @@ const TodoList: React.FC<TodoListProps> = ({
   );
 };
 
-const mapStateToProps = (state: AppState) => {
+const mapStateToProps = ({todos}: AppState) => {
   return {
-    todos: state.todos.todos,
-    filteredByDate: state.todos.filteredByDate,
-    sortedBy: state.todos.sortedBy,
-    sortOrder: state.todos.sortOrder,
+    todos: todos.todos,
+    filteredByDate: todos.filteredByDate,
+    sortedBy: todos.sortedBy,
+    sortOrder: todos.sortOrder,
   };
 };
 

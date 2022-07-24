@@ -6,6 +6,7 @@ import TodoList from '../../components/Todo/TodoList';
 import TodoForm from '../../components/TodoForm/TodoForm';
 import { AppState } from '../../model';
 import { FilteredByDate, SortedBy, SortOrder } from '../../types';
+import { sortedByItems, sortOrderItems } from './TodoMainPageConstants';
 
 import './TodoMainPage.css';
 
@@ -13,9 +14,9 @@ type TodoMainPageProps = {
   filteredByDate: FilteredByDate;
   sortedBy: SortedBy;
   sortOrder: SortOrder;
-  setIsFilteredAction: (filteredByDate: FilteredByDate) => void;
-  setSortedByAction: (sortedBy: string) => void;
-  setSortOrderAction: (sortOrder: string) => void;
+  setIsFilteredAction(filteredByDate: FilteredByDate): void;
+  setSortedByAction(sortedBy: string): void;
+  setSortOrderAction(sortOrder: string): void;
 };
 
 const TodoMainPage: React.FC<TodoMainPageProps> = ({
@@ -66,13 +67,15 @@ const TodoMainPage: React.FC<TodoMainPageProps> = ({
         <div className="sorting-selects--container">
           <span>Sort by </span>
           <select value={sortedBy} onChange={changeSortedValue}>
-            <option value="Title">Title</option>
-            <option value="Date">Date</option>
+            {sortedByItems.map(({ value, label }) => {
+              return <option value={value} key={label} label={label}></option>;
+            })}
           </select>
 
           <select value={sortOrder} onChange={changeOrderValue}>
-            <option value="Direct">Direct</option>
-            <option value="Reverse">Reverse</option>
+            {sortOrderItems.map(({ value, label }) => {
+              return <option value={value} key={label} label={label}></option>;
+            })}
           </select>
         </div>
       </div>
@@ -82,26 +85,26 @@ const TodoMainPage: React.FC<TodoMainPageProps> = ({
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  setIsFilteredAction: (filteredByDate: FilteredByDate) => {
+  setIsFilteredAction(filteredByDate: FilteredByDate) {
     const actionPayload = setFilteredBy(filteredByDate);
     dispatch(actionPayload);
   },
-  setSortedByAction: (sortedBy: string) => {
+  setSortedByAction(sortedBy: string) {
     const actionPayload = setSortedBy(sortedBy);
     dispatch(actionPayload);
   },
-  setSortOrderAction: (sortOrder: string) => {
+  setSortOrderAction(sortOrder: string) {
     const actionPayload = setSortOrder(sortOrder);
     dispatch(actionPayload);
   },
 });
 
-const mapStateToProps = (state: AppState) => {
+const mapStateToProps = ({todos}: AppState) => {
   return {
-    todos: state.todos.todos,
-    filteredByDate: state.todos.filteredByDate,
-    sortedBy: state.todos.sortedBy,
-    sortOrder: state.todos.sortOrder,
+    todos: todos.todos,
+    filteredByDate: todos.filteredByDate,
+    sortedBy: todos.sortedBy,
+    sortOrder: todos.sortOrder,
   };
 };
 

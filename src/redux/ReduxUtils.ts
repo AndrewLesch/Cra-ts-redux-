@@ -1,25 +1,19 @@
 import { Todo } from '../model';
 
-type actionsWithTodoType = {
-  deleteTodo(todos: Todo[], payload: string): Todo[];
-  toggleTodo(todos: Todo[], payload: string): Todo[];
+type TodoUtilsType = {
+  deleteTodoById(todos: Todo[], deleteTodoId: string): Todo[];
+  toggleTodo(todos: Todo[], complitedTodoId: string): Todo[];
 };
 
-export const actionsWithTodo: actionsWithTodoType = {
-  deleteTodo(todos, payload) {
-    const deletedTodoId = todos.findIndex((todo) => {
-      const copiedTodo: Todo = { ...todo };
-      return copiedTodo.id === payload;
-    });
-
-    todos.splice(deletedTodoId, 1);
-    return todos;
+export const TodoUtils: TodoUtilsType = {
+  deleteTodoById(todos, deleteTodoId) {
+    return todos.filter(({ id }) => id !== deleteTodoId);
   },
 
-  toggleTodo(todos, payload) {
+  toggleTodo(todos, complitedTodoId) {
     const newTodos = todos.map((todo) => {
       const todoCopy: Todo = { ...todo };
-      if (todoCopy.id === payload) {
+      if (todoCopy.id === complitedTodoId) {
         todoCopy.completed = !todoCopy.completed;
       }
 

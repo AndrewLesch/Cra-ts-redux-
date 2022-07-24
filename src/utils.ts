@@ -17,7 +17,7 @@ export const sortAndFilterTodos = (
   switch (sortedBy) {
     case SortedBy.TITLE: {
       todos = todos.sort((firstTodo, secondTodo) =>
-        sortOrder === SortOrder.DIRECT
+        sortOrder === SortOrder.ASC
           ? firstTodo.title.localeCompare(secondTodo.title)
           : secondTodo.title.localeCompare(firstTodo.title)
       );
@@ -27,7 +27,7 @@ export const sortAndFilterTodos = (
 
     case SortedBy.DATE: {
       todos = todos.sort((firstTodo, secondTodo) =>
-        sortOrder === SortOrder.DIRECT
+        sortOrder === SortOrder.ASC
           ? firstTodo.date - secondTodo.date
           : secondTodo.date - firstTodo.date
       );
